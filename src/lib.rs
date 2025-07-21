@@ -30,7 +30,6 @@ impl<T> Point<T> {
 // Custom serialization for Bitcoin transaction
 pub trait BitcoinSerialize {
     fn serialize(&self) -> Vec<u8> {
-        // TODO: Implement serialization to bytes
         vec![]
     }
 }
@@ -190,10 +189,8 @@ impl TryFrom<&[u8]> for LegacyTransaction {
 impl BitcoinSerialize for LegacyTransaction {
     fn serialize(&self) -> Vec<u8> {
         let mut bytes = Vec::new();
-        bytes.extend(&self.version.to_le_bytes());
-        bytes.extend(&(self.inputs.len() as u32).to_le_bytes());
-        bytes.extend(&(self.outputs.len() as u32).to_le_bytes());
-        bytes.extend(&self.lock_time.to_le_bytes());
-        bytes
+        bytes.extend(&self.version.to_le_bytes()); // 4 bytes
+        bytes.extend(&self.lock_time.to_le_bytes()); // 4 bytes
+        bytes // Total: 8 bytes
     }
 }
